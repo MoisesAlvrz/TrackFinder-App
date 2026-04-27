@@ -33,7 +33,7 @@ fun TopBar(screenLabel: String = "", onBack: () -> Unit) {
         Modifier
             .fillMaxWidth()
             .height(64.dp)
-            .background(colors.background)
+            .background(colors.surface)
             .padding(horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -59,10 +59,10 @@ fun TopBar(screenLabel: String = "", onBack: () -> Unit) {
         ) {
             Text(
                 text = buildAnnotatedString {
-                    withStyle(SpanStyle(fontWeight = FontWeight.ExtraBold)) {
+                    withStyle(SpanStyle(color = colors.onPrimary, fontWeight = FontWeight.ExtraBold)) {
                         append("T")
                     }
-                    withStyle(SpanStyle(color = colors.onPrimary)) {
+                    withStyle(SpanStyle(color = colors.secondary)) {
                         append("F")
                     }
                 },

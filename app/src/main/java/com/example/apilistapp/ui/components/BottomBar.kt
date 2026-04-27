@@ -1,5 +1,6 @@
 package com.example.apilistapp.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -8,10 +9,12 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavKey
@@ -22,9 +25,13 @@ fun BottomBar(
     currentScreen: NavKey?,
     onNavigate: (Routes) -> Unit
 ) {
+    val colors = MaterialTheme.colorScheme
+
     Column {
         HorizontalDivider(thickness = 2.dp, color = Color.Black)
-        NavigationBar {
+        NavigationBar(
+            containerColor = colors.surface
+        ) {
             NavigationBarItem(
                 icon = { Icon(Icons.Default.List, contentDescription = "List") },
                 label = { Text("Explorer") },

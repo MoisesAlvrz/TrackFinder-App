@@ -1,5 +1,6 @@
 package com.example.apilistapp.ui.screens.list
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -44,10 +46,14 @@ fun ListScreen(navigateToDetail: (Long) -> Unit) {
     val vm: ListScreenViewModel = viewModel()
     val uiState by vm.uiState.collectAsStateWithLifecycle()
     val enteredQuery by vm.enteredQuery.collectAsStateWithLifecycle()
+    val colors = MaterialTheme.colorScheme
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colors.background)
+
     ) {
         AppLogo(modifier = Modifier.padding(vertical = 64.dp))
         SearchBar(enteredQuery,
