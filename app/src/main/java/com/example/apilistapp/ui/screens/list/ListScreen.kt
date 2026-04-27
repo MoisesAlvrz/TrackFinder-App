@@ -13,12 +13,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -78,8 +81,15 @@ fun ListScreen(navigateToDetail: (Long) -> Unit) {
                 val albumsList = currentState.fetchedAlbums
                 val tracksList = currentState.fetchedTracks
 
-                if (tracksList.isNotEmpty()) {
+                if (enteredQuery.isEmpty()) {
+                    Text(text="Latest Releases", modifier = Modifier.padding(bottom = 8.dp))
+                } else {
 
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items()
+                    }
                 }
                 LazyColumn(
                     Modifier.fillMaxSize(),
@@ -177,4 +187,9 @@ fun AppLogo(modifier: Modifier = Modifier) {
         letterSpacing = 2.sp,
         fontWeight = FontWeight.Light,
     )
+}
+
+@Composable
+fun SearchCategoryButton(modifier: Modifier = Modifier) {
+    Text("Albums")
 }
