@@ -88,7 +88,6 @@ fun ListScreen(navigateToDetail: (Long) -> Unit) {
                     LazyRow(
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        items()
                     }
                 }
                 LazyColumn(

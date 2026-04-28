@@ -18,7 +18,7 @@ fun AlbumDetailsArtistDto.toDomain(): Artist {
     return Artist(
         id = id,
         name = name,
-        picture = picture_medium
+        pictureUrl = picture_medium
     )
 }
 

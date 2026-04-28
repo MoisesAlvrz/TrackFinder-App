@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.jetbrains.kotlin.serialization)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -71,4 +72,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:5.3.2")
     implementation("com.github.bumptech.glide:glide:4.16.0") // Library to load URL images
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    //Room
+    implementation("androidx.room:room-runtime:2.8.4")
+    implementation("androidx.room:room-ktx:2.8.4")
+    ksp("androidx.room:room-compiler:2.8.4")
 }
