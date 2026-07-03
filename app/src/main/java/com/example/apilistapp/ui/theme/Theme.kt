@@ -1,5 +1,6 @@
 package com.example.apilistapp.ui.theme
 
+import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -8,15 +9,22 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
     primary = Color(0xFF36343b),
     onPrimary = Color(0xFFF5F5F5),
     secondary = Secondary,
+    /* Old theme --
     background = Color(0xFF161616),
     surface = Color(0xFF0A0A0A),
+    */
+    background = Color(0xFF000000),
+    surface = Color(0xFF101010),
     error = Error,
     onError = onError
 
@@ -48,6 +56,19 @@ fun APIListAppTheme(
 
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
+    }
+
+    // Update status bar icon colors
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+
+            // This tells the system:
+            // If we are in light theme, use dark icons.
+            // If we are in dark theme, use light icons.
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+        }
     }
 
     MaterialTheme(

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
@@ -32,8 +33,9 @@ fun TopBar(screenLabel: String = "", onBack: () -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
-            .height(64.dp)
             .background(colors.surface)
+            .statusBarsPadding()
+            .height(64.dp)
             .padding(horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

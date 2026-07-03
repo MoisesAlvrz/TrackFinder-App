@@ -7,21 +7,23 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -30,8 +32,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -51,17 +55,37 @@ fun ListScreen(navigateToDetail: (Long) -> Unit) {
     val enteredQuery by vm.enteredQuery.collectAsStateWithLifecycle()
     val colors = MaterialTheme.colorScheme
 
+    // Density helps transform px to dp.
+    val currentDeviceDensity = LocalDensity.current
+    val currentStatusBarHeight = WindowInsets.statusBars.getTop(currentDeviceDensity)
+
+    val topGradient = Brush.verticalGradient(
+        0.0f to colors.surface, // Color at the very top
+        currentStatusBarHeight.toFloat() to colors.surface,
+        0.6f to Color.Black,    // Transition to black at 40% of the screen height
+        1.0f to Color.Black     // Stay black for the rest
+    )
+
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .background(colors.background)
-
+            .background(colors.background),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AppLogo(modifier = Modifier.padding(vertical = 64.dp))
-        SearchBar(enteredQuery,
-            modifier = Modifier.padding(top = 8.dp, bottom = 24.dp),
-            onQueryChange = { vm.updateResults(it) })
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(topGradient)
+                .statusBarsPadding(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            AppLogo(modifier = Modifier.padding(vertical = 64.dp))
+            SearchBar(
+                query = enteredQuery,
+                onQueryChange = { vm.updateResults(it) })
+        }
+
+
 
         when (val currentState = uiState) {
             is ListScreenUiState.Loading -> {
@@ -82,7 +106,7 @@ fun ListScreen(navigateToDetail: (Long) -> Unit) {
                 val tracksList = currentState.fetchedTracks
 
                 if (enteredQuery.isEmpty()) {
-                    Text(text="Latest Releases", modifier = Modifier.padding(bottom = 8.dp))
+                    Text(text = "Latest Releases", modifier = Modifier.padding(bottom = 8.dp))
                 } else {
 
                     LazyRow(
@@ -105,8 +129,8 @@ fun ListScreen(navigateToDetail: (Long) -> Unit) {
 
 @Composable
 fun SearchBar(
-    query: String,
     modifier: Modifier = Modifier,
+    query: String,
     onQueryChange: (String) -> Unit
 ) {
     TextField(

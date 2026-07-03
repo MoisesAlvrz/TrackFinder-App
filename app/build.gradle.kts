@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+
     namespace = "com.example.apilistapp"
     compileSdk {
         version = release(36) {

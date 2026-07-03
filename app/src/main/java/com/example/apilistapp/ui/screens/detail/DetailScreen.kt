@@ -26,7 +26,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.Scaffold
 import androidx.compose.ui.text.font.FontWeight
 import com.example.apilistapp.domain.Artist
 import com.example.apilistapp.domain.Track
@@ -43,53 +43,58 @@ fun DetailScreen(releaseId: Long, navigateBack: () -> Unit) {
         vm.getAlbumDetails(releaseId)
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-            .background(Color.Red),
-    ) {
-        TopBar(screenLabel = "Album Details", onBack = navigateBack)
-
-        if (albumDetails == null) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            Column(
-                Modifier
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Column(
-
-                ) { }
-                LazyColumn(
-                    Modifier.padding(vertical = 5.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+    Scaffold(
+        topBar = {
+            TopBar(screenLabel = "Album Details", onBack = navigateBack)
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(colors.background)
+                .padding(top = innerPadding.calculateTopPadding()),
+        ) {
+            if (albumDetails == null) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    item {
-                        AlbumCover(albumDetails?.coverUrl ?: "")
-                        AlbumHeader(
-                            albumDetails!!.title,
-                            albumDetails!!.releaseDate,
-                            albumDetails!!.artist
-                        )
-                    }
+                    CircularProgressIndicator()
+                }
+            } else {
+                Column(
+                    Modifier
+                        .fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Column(
 
-                    item {
-                        Text("Tracklist")
-                    }
+                    ) { }
+                    LazyColumn(
+                        Modifier.padding(vertical = 5.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        item {
+                            AlbumCover(albumDetails?.coverUrl ?: "")
+                            AlbumHeader(
+                                albumDetails!!.title,
+                                albumDetails!!.releaseDate,
+                                albumDetails!!.artist
+                            )
+                        }
 
-                    items(albumDetails?.tracks ?: emptyList()) { item ->
-                        TrackItem(track = item)
+                        item {
+                            Text("Tracklist")
+                        }
+
+                        items(albumDetails?.tracks ?: emptyList()) { item ->
+                            TrackItem(track = item)
+                        }
                     }
                 }
             }
         }
     }
-
 }
 
 @Composable

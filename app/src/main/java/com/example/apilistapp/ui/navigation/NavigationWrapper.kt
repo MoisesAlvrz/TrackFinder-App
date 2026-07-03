@@ -1,5 +1,10 @@
 package com.example.apilistapp.ui.navigation
 
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -10,7 +15,6 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.example.apilistapp.ui.components.BottomBar
-import com.example.apilistapp.ui.components.TopBar
 import com.example.apilistapp.ui.screens.detail.DetailScreen
 import com.example.apilistapp.ui.screens.favorites.FavoritesScreen
 import com.example.apilistapp.ui.screens.list.ListScreen
@@ -20,6 +24,7 @@ import com.example.apilistapp.ui.screens.settings.SettingsScreen
 fun NavigationWrapper() {
     val backStack: NavBackStack<NavKey> = rememberNavBackStack(Routes.ListScreen)
     val currentScreen: NavKey? = backStack.lastOrNull()
+    val sharedTabTransition: ContentTransform = fadeIn(animationSpec = tween(400)) togetherWith fadeOut(animationSpec = tween(400))
 
     Scaffold(
         bottomBar = {
@@ -36,7 +41,10 @@ fun NavigationWrapper() {
         NavDisplay(
             backStack = backStack,
             onBack = { backStack.removeLastOrNull() },
-            modifier = Modifier.padding(innerPadding),
+            modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
+            transitionSpec = { sharedTabTransition },
+            popTransitionSpec = { sharedTabTransition },
+            predictivePopTransitionSpec = { sharedTabTransition },
             entryProvider = entryProvider {
                 entry<Routes.ListScreen> {
                     ListScreen() { clickedId ->
